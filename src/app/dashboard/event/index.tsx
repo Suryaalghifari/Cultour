@@ -1,131 +1,97 @@
-import axios from "axios";
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import EventHeader from "@/components/EventHeader";
+import Colors from "@/constants/color";
+import { Typography } from "@/constants/Typography";
+import React from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+// Data event dummy
+const events = [
+  {
+    id: "1",
+    title: "Asia Afrika Festival",
+    placeId: "1",
+    image: require("@/assets/images/place/Bandung.png"),
+  },
+  {
+    id: "2",
+    title: "Angklung Pride",
+    placeId: "3",
+    image: require("@/assets/images/place/Jogja.png"),
+  },
+];
 
-interface Event {
-  id: string;
-  name: string;
-  description: string;
-  start_date: string;
-  end_date: string;
-  location_id: string;
-  is_kid_friendly: boolean;
-  views: number;
-}
-
-export default function EventScreen() {
-  const router = useRouter();
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const fetchEvents = async () => {
-    console.log("🔄 Memulai fetch events...");
-  
-    try {
-      const response = await axios.get<Event[]>('http://localhost:8181/events');
-  
-      console.log("✅ Response Status:", response.status);
-      console.log("✅ Response Data:", response.data);
-  
-      setEvents(response.data);
-      setLoading(false);
-    } catch (err: any) {
-      console.log("❌ Terjadi error saat fetch events");
-  
-      if (axios.isAxiosError(err)) {
-        console.error("🔴 Axios error:", err.message);
-        console.error("🔴 Response error:", err.response?.data);
-      } else {
-        console.error("🔴 Unknown error:", err);
-      }
-  
-      setError(err.message || "Terjadi kesalahan");
-      setLoading(false);
-    }
+export default function EventPage() {
+  // Handler
+  const handleBack = () => {
+    // TODO: implementasi navigasi back
   };
-  
   const handleCreateEvent = () => {
-    router.push('/dashboard/addEvan');
+    // TODO: implementasi create event
   };
-
-  const handleEventDetail = (eventId: string) => {
-    router.push(`/dashboard/event/${eventId}`);
+  const handleDetail = (id: string) => {
+    // TODO: implementasi detail event
   };
-
-  if (loading) {
-    return (
-      <View className="flex-1 bg-[#F9EFE4] justify-center items-center">
-        <ActivityIndicator size="large" color="#4E7D79" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View className="flex-1 bg-[#F9EFE4] justify-center items-center">
-        <Text className="text-red-500">{error}</Text>
-      </View>
-    );
-  }
 
   return (
-    <View className="flex-1 bg-[#F9EFE4]">
-      <View className="flex-row justify-between items-center p-4">
-        <Text className="text-xl font-bold text-[#4E7D79]">Event</Text> 
-        <Pressable 
-          onPress={handleCreateEvent}
-          className="bg-[#EEC887] px-4 py-2 rounded-lg"
-        >
-          <Text className="text-[#4E7D79] font-bold">Create Event</Text>
-        </Pressable>
-      </View>
-
-      <ScrollView 
-        contentContainerStyle={{ 
-          paddingHorizontal: 16, 
-          paddingBottom: 20 
-        }}
-      >
+    <View style={{ flex: 1, backgroundColor: Colors.white }}>
+      <EventHeader
+        title="Event"
+        onBack={handleBack}
+        onCreateEvent={handleCreateEvent}
+      />
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 16 }}>
         {events.map((event) => (
-          <TouchableOpacity 
+          <View
             key={event.id}
-            onPress={() => handleEventDetail(event.id)}
-            className="mb-4 bg-white rounded-xl shadow-md"
+            style={{
+              backgroundColor: Colors.primary50,
+              borderRadius: 32,
+              marginBottom: 32,
+              padding: 20,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.08,
+              shadowRadius: 4,
+              elevation: 2,
+            }}
           >
-            <View className="p-4">
-              <Text className="text-lg font-bold text-[#4E7D79]">
-                {event.name}
-              </Text>
-              <Text className="text-sm text-gray-600 mt-2">
-                {event.description}
-              </Text>
-              <Text className="text-sm text-gray-500 mt-1">
-                Tanggal: {new Date(event.start_date).toLocaleDateString()} - {new Date(event.end_date).toLocaleDateString()}
-              </Text>
-              <TouchableOpacity 
-                className="mt-2"
-                onPress={() => handleEventDetail(event.id)}
+            <Image
+              source={event.image}
+              style={{
+                width: "100%",
+                height: 160,
+                borderRadius: 24,
+                marginBottom: 16,
+                resizeMode: "cover",
+              }}
+            />
+            <Text
+              style={{
+                ...Typography.styles.subtitle,
+                color: Colors.textPrimary,
+                marginBottom: 8,
+              }}
+            >
+              {event.title}
+            </Text>
+            <TouchableOpacity
+              onPress={() => handleDetail(event.id)}
+              style={{
+                alignSelf: "flex-start",
+                backgroundColor: Colors.primary,
+                borderRadius: 12,
+                paddingHorizontal: 14,
+                paddingVertical: 4,
+                marginTop: 2,
+              }}
+            >
+              <Text
+                style={{ ...Typography.styles.body, color: Colors.textPrimary }}
               >
-                <Text className="text-[#EEC887] font-bold">
-                  Lihat Detail
-                </Text>
-              </TouchableOpacity> 
-            </View>
-          </TouchableOpacity>
+                See Detail
+              </Text>
+            </TouchableOpacity>
+          </View>
         ))}
       </ScrollView>
     </View>
