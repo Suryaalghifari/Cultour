@@ -44,7 +44,7 @@ export default function BottomNavBar({ active }: BottomNavBarProps) {
         paddingHorizontal: 18,
         paddingVertical: 14,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
+        shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.08,
         shadowRadius: 4,
         elevation: 4,
