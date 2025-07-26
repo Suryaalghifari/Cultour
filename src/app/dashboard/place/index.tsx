@@ -1,30 +1,14 @@
+// src/app/places/index.tsx (atau nama sesuai halamanmu)
+
+import { getAllPlaces } from "@/api/data/places";
 import Colors from "@/constants/color";
 import { Typography } from "@/constants/Typography";
 import React from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 
-const places = [
-  {
-    id: "1",
-    name: "Bandung",
-    province: "Jawa Barat",
-    image: require("@/assets/images/place/Bandung.png"),
-  },
-  {
-    id: "2",
-    name: "Jakarta",
-    province: "DKI Jakarta",
-    image: require("@/assets/images/place/Jakarta.png"),
-  },
-  {
-    id: "3",
-    name: "DIY Yogyakarta",
-    province: "DIY Yogyakarta",
-    image: require("@/assets/images/place/Jogja.png"),
-  },
-];
-
 export default function PlaceList() {
+  const places = getAllPlaces();
+
   return (
     <View className="flex-1 bg-white">
       <ScrollView contentContainerStyle={{ padding: 24 }}>
@@ -33,7 +17,7 @@ export default function PlaceList() {
         </Text>
 
         {places.map((place) => (
-          <View key={place.name} className="flex-row items-center mb-6">
+          <View key={place.id} className="flex-row items-center mb-6">
             <Image
               source={place.image}
               className="w-[72px] h-[72px] rounded-xl mr-3 border"

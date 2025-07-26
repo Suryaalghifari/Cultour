@@ -1,4 +1,3 @@
-// src/app/dashboard/_layout.tsx
 import BottomNavBar from "@/components/BottemNavbar";
 import DashboardHeader from "@/components/DashboardHeader";
 import { Stack, usePathname } from "expo-router";
@@ -12,25 +11,23 @@ export default function DashboardLayout() {
   if (pathname.endsWith("/event")) active = "event";
   if (pathname.endsWith("/profile")) active = "profile";
 
-  // State search dan notif
+  const hideUI = pathname.includes("/place/") || pathname.includes("/event/");
+
   const [search, setSearch] = useState("");
-  function handleNotifPress() {
-    // logic ke halaman notif atau popup notif
-  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <DashboardHeader
-        logoSource={require("@/assets/images/logoSplash.png")}
-        searchValue={search}
-        setSearchValue={setSearch}
-        onSearch={() => {
-          /* search logic */
-        }}
-        onNotifPress={handleNotifPress}
-      />
+      {!hideUI && (
+        <DashboardHeader
+          logoSource={require("@/assets/images/logoSplash.png")}
+          searchValue={search}
+          setSearchValue={setSearch}
+          onSearch={() => {}}
+          onNotifPress={() => {}}
+        />
+      )}
       <Stack screenOptions={{ headerShown: false }} />
-      <BottomNavBar active={active} />
+      {!hideUI && <BottomNavBar active={active} />}
     </View>
   );
 }

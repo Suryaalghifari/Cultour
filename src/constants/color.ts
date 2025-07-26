@@ -19,14 +19,20 @@ const Colors = {
 
   // 🔤 Text
   textPrimary: BaseColors.dark,
-  textOnPrimary: BaseColors.white,
+  textSecondary: "#666666",
   textInverse: BaseColors.white,
+  textOnPrimary: BaseColors.white,
 
   // 🔘 Buttons
   buttonPrimary: BaseColors.primary,
-  buttonPrimaryText: BaseColors.white,
+  buttonPrimaryText: BaseColors.dark,
+  buttonSecondary: BaseColors.primary50,
+  buttonSecondaryText: BaseColors.dark,
+  buttonOutline: "transparent",
+  buttonOutlineBorder: BaseColors.primary,
+  buttonOutlineText: BaseColors.primary,
 
-  // 🧭 Headers, TabBar, dll
+  // 🧭 Headers, TabBar, etc.
   headerBackground: BaseColors.primary,
   headerText: BaseColors.white,
 };
