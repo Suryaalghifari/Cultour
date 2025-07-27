@@ -33,11 +33,12 @@ export default function EventDetailPage() {
 
   const handleAskAI = () => {
     // TODO: Ganti route ini sesuai kebutuhan kamu
-    // Misal: router.push(`/dashboard/event/${eventId}/ask-ai`);
+    router.push(`/dashboard/chat`);
     console.log("Ask AI pressed");
   };
 
   const handleDiscussion = () => {
+    router.push(`/dashboard/discusion`);
     // TODO: Ganti route ini sesuai kebutuhan kamu
     // Misal: router.push(`/dashboard/event/${eventId}/discussion`);
     console.log("Discussion pressed");

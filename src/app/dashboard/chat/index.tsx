@@ -1,8 +1,8 @@
 "use client";
 
 import { Icon } from "@iconify/react";
-import { useRouter } from "expo-router";
-import { useState } from "react";
+import { usePathname, useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -16,6 +16,8 @@ import {
 
 export default function ChatbotEventPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  console.log("Current pathname:", pathname);
 
   // State contoh pesan
   const [messages, setMessages] = useState([
@@ -29,26 +31,32 @@ export default function ChatbotEventPage() {
       id: "2",
       from: "bot",
       text: "Perayaan Sejarah Konferensi Asia-Afrika Dengan Parade Budaya, Pertunjukan Seni Tradisional Dan Kontemporer Sepanjang Jalan Asia-Afrika, Menghadirkan Rasa Persatuan Antanegara Asia Dan Afrika.",
-      avatar: require("@/assets/bot-avatar.png"), // Ganti dengan path bot avatar kamu
+      avatar: require("@/assets/images/bot.svg"), // Ganti dengan path bot avatar kamu, pastikan file PNG/JPG, bukan SVG
       name: "Cultur",
     },
   ]);
   const [input, setInput] = useState("");
 
   // Handler tombol back
-  const handleBack = () => router.back();
+  const handleBack = () => {
+    // Coba cek apakah router.replace bisa jalan
+    try {
+      router.replace("/dashboard/home");
+    } catch (e) {
+      console.error("router.replace error:", e);
+    }
+  };
 
   // Handler send chat
   const handleSend = () => {
     if (!input.trim()) return;
-    // TODO: Ganti ini untuk kirim ke API chatbot
-    setMessages([
-      ...messages,
+    setMessages((prev) => [
+      ...prev,
       {
         id: String(Date.now()),
         from: "user",
         text: input,
-        avatar: "https://randomuser.me/api/portraits/men/40.jpg", // avatar user
+        avatar: "https://randomuser.me/api/portraits/men/40.jpg",
       },
     ]);
     setInput("");
@@ -58,9 +66,11 @@ export default function ChatbotEventPage() {
     <View className="flex-1 bg-[#E8D5B7]">
       {/* Header */}
       <View className="flex-row items-center px-5 pt-12 pb-5">
+        {/* Perbaikan: pastikan TouchableOpacity tidak tertutup elemen lain dan style zIndex/elevation */}
         <TouchableOpacity
           onPress={handleBack}
           className="w-10 h-10 rounded-full bg-primary/50 items-center justify-center border border-black"
+          style={{ zIndex: 10, elevation: 10 }}
         >
           <Icon icon="mdi:arrow-left" width={24} height={24} color="#1A1A1A" />
         </TouchableOpacity>
@@ -122,7 +132,8 @@ export default function ChatbotEventPage() {
             placeholder="Chat Again"
             placeholderTextColor="#888"
             style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}
-            // onSubmitEditing={handleSend}
+            onSubmitEditing={handleSend}
+            returnKeyType="send"
           />
           <TouchableOpacity onPress={handleSend} className="ml-2" hitSlop={10}>
             <Icon icon="mdi:send" width={24} height={24} color="#1A1A1A" />

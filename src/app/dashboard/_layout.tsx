@@ -10,9 +10,11 @@ export default function DashboardLayout() {
   if (pathname.endsWith("/place")) active = "place";
   if (pathname.endsWith("/event")) active = "event";
   if (pathname.endsWith("/profile")) active = "profile";
-
-  const hideUI = pathname.includes("/place/") || pathname.includes("/event/");
-
+  const hideUI =
+    pathname.includes("/place/") ||
+    pathname.includes("/event/") ||
+    pathname.includes("/chat") ||
+    pathname.includes("/discusion");
   const [search, setSearch] = useState("");
 
   return (
