@@ -7,9 +7,12 @@ import { View } from "react-native";
 export default function DashboardLayout() {
   const pathname = usePathname();
   let active = "home";
-  if (pathname.endsWith("/place")) active = "place";
-  if (pathname.endsWith("/event")) active = "event";
-  if (pathname.endsWith("/profile")) active = "profile";
+
+  if (pathname.includes("/place")) active = "place";
+  else if (pathname.includes("/event") || pathname.includes("/crudEvent"))
+    active = "event";
+  else if (pathname.includes("/profile")) active = "profile";
+
   const hideUI =
     pathname.includes("/place/") ||
     pathname.includes("/event/") ||
