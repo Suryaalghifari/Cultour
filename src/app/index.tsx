@@ -1,12 +1,24 @@
 import CustomSplashScreen from "@/components/CustomSplashScreen";
-import Colors from "@/constants/color";
-import { router } from "expo-router";
+import Colors from "@/constants/Colors";
+import { router, SplashScreen } from "expo-router";
+import { LogBox } from "react-native";
+
+// Nonaktifkan warning umum yang mengganggu
+LogBox.ignoreAllLogs(true);
+
+export default function Index() {
+  SplashScreen.preventAutoHideAsync().catch((error) => {
+    console.error("Failed to prevent splash screen:", error);
+  });
 
 export default function Index() {
   return (
     <CustomSplashScreen
-      onAnimationComplete={() => router.replace("/dashboard/home")} // 👈 langsung navigasi ke halaman
-      imageSource={require("@/assets/images/logoSplash.png")}
+      onAnimationComplete={() => {
+        console.log("Animation complete, navigating to tabs");
+        router.replace("/(tabs)");
+      }}
+      imageSource={require("@/assets/images/splash.png")}
       backgroundColor={Colors.primary50}
       duration={2000}
       size={150}

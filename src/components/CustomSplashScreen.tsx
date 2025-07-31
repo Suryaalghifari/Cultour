@@ -1,4 +1,4 @@
-import Colors from "@/constants/color";
+import Colors from "@/constants/Colors";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, Image, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

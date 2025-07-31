@@ -1,106 +1,54 @@
-// src/components/GlobalButton.tsx
+import Colors from '@/constants/Colors';
+import React from 'react';
+import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 
-import Colors from "@/constants/color";
-import { Typography } from "@/constants/Typography";
-import React from "react";
-import {
-  Pressable,
-  StyleProp,
-  Text,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native";
-
-interface GlobalButtonProps {
+type ButtonProps = {
   label: string;
   onPress: () => void;
-  variant?: "primary" | "secondary" | "outline";
-  size?: "sm" | "md" | "lg";
-  disabled?: boolean;
-  iconLeft?: React.ReactNode;
-  iconRight?: React.ReactNode;
-  containerStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
   className?: string;
-}
+  style?: StyleProp<ViewStyle>;
+  labelStyle?: StyleProp<TextStyle>;
+  variant?: 'primary' | 'secondary';
+  disabled?: boolean;
+};
 
-const GlobalButton: React.FC<GlobalButtonProps> = ({
-  label,
-  onPress,
-  variant = "primary",
-  size = "md",
-  disabled = false,
-  iconLeft,
-  iconRight,
-  containerStyle,
-  textStyle,
-  className = "",
-}) => {
-  const getBackgroundColor = () => {
-    if (disabled) return Colors.disabled;
-    switch (variant) {
-      case "secondary":
-        return Colors.primary50;
-      case "outline":
-        return "transparent";
-      default:
-        return Colors.buttonPrimary;
-    }
+export default function Button({
+  label, 
+  onPress, 
+  className = '', 
+  style,
+  labelStyle,
+  variant = 'primary',
+  disabled = false
+}: ButtonProps) {
+  const baseStyle: ViewStyle = {
+    backgroundColor: disabled 
+      ? Colors.buttonSecondary 
+      : (variant === 'primary' ? Colors.buttonPrimary : Colors.buttonSecondary),
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: disabled ? 0.5 : 1,
   };
 
-  const getTextColor = () => {
-    if (disabled) return Colors.textDisabled;
-    switch (variant) {
-      case "outline":
-        return Colors.buttonPrimary;
-      default:
-        return Colors.textPrimary;
-    }
-  };
-
-  const getBorderStyle = () => {
-    if (variant === "outline") {
-      return {
-        borderWidth: 1,
-        borderColor: Colors.primary,
-      };
-    }
-    return {};
-  };
-
-  const getSizeStyle = () => {
-    switch (size) {
-      case "sm":
-        return "h-10 px-4";
-      case "lg":
-        return "h-14 px-6";
-      default:
-        return "h-12 px-5";
-    }
+  const baseLabelStyle: TextStyle = {
+    color: disabled 
+      ? Colors.buttonSecondaryText 
+      : (variant === 'primary' ? Colors.buttonPrimaryText : Colors.buttonSecondaryText),
+    fontSize: 16,
+    fontWeight: '600',
   };
 
   return (
-    <Pressable
-      onPress={onPress}
+    <TouchableOpacity 
+      onPress={onPress} 
+      style={[baseStyle, style]}
+      className={className}
       disabled={disabled}
-      className={`rounded-xl justify-center items-center flex-row ${getSizeStyle()} ${className}`}
-      style={[
-        { backgroundColor: getBackgroundColor() },
-        getBorderStyle(),
-        containerStyle,
-      ]}
     >
-      {iconLeft && <View className="mr-2">{iconLeft}</View>}
-      <Text
-        className="text-base font-medium"
-        style={[{ color: getTextColor() }, Typography.styles.body, textStyle]}
-      >
-        {label}
-      </Text>
-      {iconRight && <View className="ml-2">{iconRight}</View>}
-    </Pressable>
+      <Text style={[baseLabelStyle, labelStyle]}>{label}</Text>
+    </TouchableOpacity>
   );
-};
-
-export default GlobalButton;
+} 
